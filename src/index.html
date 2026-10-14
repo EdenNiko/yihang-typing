@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'">
+  <title>一行</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app" id="app">
+    <!-- 左侧导航（练习时隐藏） -->
+    <aside class="side" id="side">
+      <div class="brand drag"><i data-icon="logo"></i><span data-i18n="brand"></span></div>
+      <nav class="nav" id="nav">
+        <span class="nav-ind" id="nav-ind"></span>
+        <button data-nav="home"><i data-icon="home"></i><span data-i18n="nav.home"></span></button>
+        <button data-nav="ja"><b class="nav-ch" lang="ja">あ</b><span data-i18n="nav.ja"></span></button>
+        <button data-nav="zh"><b class="nav-ch" lang="zh-CN">中</b><span data-i18n="nav.zh"></span></button>
+        <button data-nav="mine"><i data-icon="doc"></i><span data-i18n="nav.mine"></span></button>
+        <button data-nav="history"><i data-icon="clock"></i><span data-i18n="nav.history"></span></button>
+        <button data-nav="settings"><i data-icon="gear"></i><span data-i18n="settings"></span></button>
+      </nav>
+      <div class="week">
+        <div class="week-head"><b data-i18n="week.title"></b><span id="week-min"></span></div>
+        <div class="week-bars" id="week-bars"></div>
+      </div>
+    </aside>
+
+    <div class="shell">
+      <main class="main">
+        <!-- 主页 -->
+        <section id="view-home" class="view">
+          <div class="topbar drag">
+            <div class="search" id="home-search-box">
+              <i data-icon="search"></i>
+              <input id="home-search" type="text" data-i18n-ph="search.home" autocomplete="off" spellcheck="false">
+              <div class="search-pop" id="home-search-pop" hidden></div>
+            </div>
+            <span class="spacer"></span>
+            <div class="pill date-pill"><i data-icon="clock"></i><span id="date-text"></span></div>
+            <div class="lang-switch">
+              <button id="flag-btn" class="flag-btn"><span class="flag" id="flag-cur"></span><i data-icon="down"></i></button>
+              <div id="flag-menu" class="flag-menu" hidden></div>
+            </div>
+          </div>
+          <div class="hero">
+            <div class="hero-tx">
+              <div class="quote" id="hero-quote"><span id="quote-text"></span><small id="quote-by"></small></div>
+              <p id="hero-sub"></p>
+            </div>
+            <button class="btn primary big" id="btn-random"><i data-icon="play"></i><span data-i18n="hero.random"></span></button>
+          </div>
+          <div class="entries">
+            <button class="entry" data-lang="ja">
+              <span class="entry-ic lav" lang="ja">あ</span>
+              <span class="entry-tx"><b data-i18n="home.ja"></b><small data-i18n="home.jaSub"></small></span>
+            </button>
+            <button class="entry" data-lang="zh">
+              <span class="entry-ic cyan" lang="zh-CN">中</span>
+              <span class="entry-tx"><b data-i18n="home.zh"></b><small data-i18n="home.zhSub"></small></span>
+            </button>
+            <button class="entry" id="card-history">
+              <span class="entry-ic peach" lang="zh-CN">记</span>
+              <span class="entry-tx"><b data-i18n="home.hist"></b><small data-i18n="home.histSub"></small></span>
+            </button>
+          </div>
+          <div class="panel trend">
+            <div class="panel-head">
+              <div>
+                <div class="trend-title">
+                  <h2 id="trend-title"></h2>
+                  <div class="seg light" id="trend-unit">
+                    <button data-u="week" data-i18n="trend.byWeek"></button>
+                    <button data-u="day" data-i18n="trend.byDay"></button>
+                  </div>
+                </div>
+                <p id="trend-sub"></p>
+              </div>
+              <div class="seg dark" id="trend-seg">
+                <button data-l="ja" data-i18n="lang.ja"></button>
+                <button data-l="zh" data-i18n="lang.zh"></button>
+              </div>
+            </div>
+            <div id="trend-chart" class="trend-chart"></div>
+          </div>
+          <div class="tiles" id="home-tiles"></div>
+        </section>
+
+        <!-- 文章选择 -->
+        <section id="view-list" class="view" hidden>
+          <div class="topbar drag">
+            <button class="btn white back" data-back><i data-icon="left"></i><span data-i18n="back"></span></button>
+            <h1 id="list-title"></h1>
+            <div class="search flat">
+              <i data-icon="search"></i>
+              <input id="list-search" type="text" data-i18n-ph="search.list" autocomplete="off" spellcheck="false">
+            </div>
+            <span class="spacer"></span>
+            <button class="btn white" data-go-history><i data-icon="clock"></i><span data-i18n="history"></span></button>
+            <button class="btn primary" id="btn-add"><i data-icon="plus"></i><span data-i18n="add"></span></button>
+          </div>
+          <div class="list-body">
+            <nav class="cats">
+              <div class="cats-label" id="cats-label"></div>
+              <div id="cat-list"><span class="cat-ind" id="cat-ind"></span></div>
+            </nav>
+            <div class="list-main">
+              <div class="list-head">
+                <h2 id="cat-title"></h2><span id="cat-count" class="muted"></span>
+                <span class="spacer"></span>
+                <div class="seg light" id="sort-seg">
+                  <button data-s="default" data-i18n="sort.default"></button>
+                  <button data-s="new" data-i18n="sort.new"></button>
+                </div>
+              </div>
+              <div id="article-list" class="articles"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 练习 -->
+        <section id="view-practice" class="view" hidden>
+          <div class="topbar drag">
+            <i data-icon="logo" class="p-logo"></i>
+            <h1 id="p-title"></h1>
+            <span class="spacer"></span>
+            <span id="p-pos" class="p-pos"></span>
+          </div>
+          <div class="tiles p-tiles">
+            <div class="tile"><span class="tile-ic lav"><i data-icon="timer"></i></span><span class="tile-tx"><small data-i18n="st.time"></small><b id="st-time">0:00</b></span></div>
+            <div class="tile"><span class="tile-ic cyan"><i data-icon="gauge"></i></span><span class="tile-tx"><small data-i18n="st.cpm"></small><b id="st-cpm">0</b></span></div>
+            <div class="tile" id="tile-kpm"><span class="tile-ic mint"><i data-icon="keyboard"></i></span><span class="tile-tx"><small data-i18n="st.kpm"></small><b id="st-kpm">0</b></span></div>
+            <div class="tile"><span class="tile-ic peach"><i data-icon="target"></i></span><span class="tile-tx"><small data-i18n="st.acc"></small><b id="st-acc">100%</b></span></div>
+            <div class="tile"><span class="tile-ic pink"><i data-icon="flag"></i></span><span class="tile-tx"><small data-i18n="st.prog"></small><b><span id="st-prog">0</span><em id="st-total"></em></b></span></div>
+          </div>
+          <div id="ime-warning" class="warning" hidden><i data-icon="warn"></i><span data-i18n="imeWarn"></span></div>
+          <div class="lines-panel"><div id="lines" class="lines"></div></div>
+          <div class="kb-row" id="kb-row" hidden>
+            <div id="kb" class="kb"></div>
+            <div class="kb-legend">
+              <div><i class="sw next"></i><span data-i18n="kb.next"></span></div>
+              <div><i class="sw miss"></i><span data-i18n="kb.miss"></span></div>
+              <div id="kb-now"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 成绩 -->
+        <section id="view-result" class="view" hidden>
+          <div class="topbar drag">
+            <button class="btn white back" data-back><i data-icon="left"></i><span data-i18n="back"></span></button>
+            <h1 data-i18n="res.title"></h1>
+            <span class="spacer"></span>
+            <button class="btn white" data-go-history><i data-icon="clock"></i><span data-i18n="history"></span></button>
+          </div>
+          <div class="hero small">
+            <div>
+              <h1 data-i18n="res.done"></h1>
+              <p id="res-title"></p>
+            </div>
+            <div class="hero-art done-art" aria-hidden="true">
+              <span class="art-ground"></span><span class="art-dot d1"></span><span class="art-dot d2"></span><span class="art-dot d3"></span><span class="art-dot d4"></span>
+              <span class="art-check"><i data-icon="check"></i></span>
+            </div>
+          </div>
+          <div class="banner" id="res-banner"><i data-icon="trophy"></i><span id="res-best"></span><span class="spacer"></span><span class="banner-pill" id="res-gain" hidden></span></div>
+          <div class="res-tiles" id="res-grid"></div>
+          <div class="panel res-chart">
+            <div class="panel-head"><h2 data-i18n="res.chart"></h2><p data-i18n="res.chartSub"></p></div>
+            <div class="bars" id="res-bars"></div>
+          </div>
+          <div class="res-actions">
+            <button id="btn-again" class="btn primary big"><i data-icon="restart"></i><span data-i18n="again"></span></button>
+            <button id="btn-other" class="btn white big" data-i18n="other"></button>
+          </div>
+        </section>
+
+        <!-- 历史成绩 -->
+        <section id="view-history" class="view" hidden>
+          <div class="topbar drag">
+            <button class="btn white back" data-back><i data-icon="left"></i><span data-i18n="back"></span></button>
+            <h1 data-i18n="history"></h1>
+          </div>
+          <div class="hist-toolbar">
+            <div class="seg dark" id="hist-seg">
+              <button data-f="all" data-i18n="f.all"></button>
+              <button data-f="zh" data-i18n="lang.zh"></button>
+              <button data-f="ja" data-i18n="lang.ja"></button>
+            </div>
+            <span id="hist-count" class="muted"></span>
+            <span class="spacer"></span>
+            <button id="btn-clear" class="btn danger-soft"><i data-icon="trash"></i><span data-i18n="clear"></span></button>
+          </div>
+          <div class="panel hist-panel" id="hist-body"></div>
+        </section>
+
+        <!-- 设置 -->
+        <section id="view-settings" class="view" hidden>
+          <div class="topbar drag">
+            <button class="btn white back" data-back><i data-icon="left"></i><span data-i18n="back"></span></button>
+            <h1 data-i18n="settings"></h1>
+            <span class="muted" data-i18n="set.sub"></span>
+          </div>
+          <div class="panel set-panel" id="settings-body"></div>
+        </section>
+      </main>
+
+      <!-- 右侧面板：最上面一条留给窗口按钮 -->
+      <aside class="right">
+        <div class="right-top drag"></div>
+        <div class="right-body" id="right-body"></div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- 窗口按钮：最小化 / 最大化 / 关闭（页面自己画的，不用系统默认样式） -->
+  <div id="win-ctl" class="win-ctl" hidden>
+    <button type="button" tabindex="-1" data-win="min" data-i18n-title="win.min"><i data-icon="winMin"></i></button>
+    <button type="button" tabindex="-1" data-win="max" data-i18n-title="win.max"><i data-icon="winMax"></i></button>
+    <button type="button" tabindex="-1" data-win="close" class="close" data-i18n-title="close"><i data-icon="winClose"></i></button>
+  </div>
+
+  <!-- 倒数、暂停遮罩 -->
+  <div id="countdown" class="count-mask" hidden>
+    <div class="count-ring"><div class="count-disc"><span id="count-num"></span></div></div>
+    <div class="count-dots" id="count-dots"></div>
+    <p data-i18n="count.hint"></p>
+  </div>
+  <div id="pause-mask" class="pause-mask" hidden>
+    <div class="pause-ic"><i data-icon="pause"></i></div>
+    <h2 data-i18n="paused"></h2>
+    <p id="pause-sub"></p>
+    <button id="btn-resume" class="btn primary big"><i data-icon="play"></i><span data-i18n="resume"></span></button>
+  </div>
+
+  <!-- 选择打字方式 -->
+  <dialog id="dlg-mode">
+    <h2 id="mode-title" class="dlg-title"></h2>
+    <p id="mode-sub" class="dlg-sub"></p>
+    <div class="set-row">
+      <span id="ruby-q"></span>
+      <div class="seg light" id="ruby-seg">
+        <button type="button" data-v="1" data-i18n="show"></button>
+        <button type="button" data-v="0" data-i18n="hide"></button>
+      </div>
+    </div>
+    <div id="mode-options" class="mode-options"></div>
+    <div class="dlg-actions">
+      <span class="dlg-foot" data-i18n="mode.foot"></span>
+      <span class="spacer"></span>
+      <button type="button" id="mode-cancel" class="btn soft big" data-i18n="cancel"></button>
+    </div>
+  </dialog>
+
+  <!-- 通用确认框：退出练习、删除文章、清空记录 -->
+  <dialog id="dlg-confirm" class="confirm">
+    <span class="dlg-ic" id="confirm-ic"></span>
+    <h2 id="confirm-title"></h2>
+    <p id="confirm-sub"></p>
+    <small id="confirm-note"></small>
+    <div class="confirm-actions">
+      <button type="button" id="confirm-a" class="btn big"></button>
+      <button type="button" id="confirm-b" class="btn big"></button>
+    </div>
+  </dialog>
+
+  <!-- 添加 / 编辑文章 -->
+  <dialog id="dlg-add">
+    <form id="form-add">
+      <h2 id="add-heading" class="dlg-title"></h2>
+      <div class="add-top">
+        <label><span class="add-label"><span data-i18n="dlg.name"></span><span id="add-title-count"></span></span><input id="add-title" type="text" maxlength="40"></label>
+        <label><span class="add-label"><span data-i18n="h.lang"></span></span><select id="add-lang"><option value="ja" data-i18n="lang.ja"></option><option value="zh" data-i18n="lang.zh"></option></select></label>
+        <label><span class="add-label"><span data-i18n="dlg.cat"></span></span><select id="add-cat"></select></label>
+      </div>
+      <div class="add-cols">
+        <label><span class="add-label"><span data-i18n="dlg.text"></span></span><textarea id="add-text" data-i18n-ph="dlg.ph" spellcheck="false"></textarea></label>
+        <div class="add-preview-col">
+          <span class="add-label"><span data-i18n="dlg.preview"></span><b id="add-count"></b></span>
+          <div id="add-preview" class="add-preview"></div>
+        </div>
+      </div>
+      <p id="add-hint" class="add-hint"></p>
+      <p id="add-warn" class="warning" hidden><i data-icon="warn"></i><span id="add-warn-text"></span></p>
+      <p id="add-error" class="warning bad" hidden><i data-icon="warn"></i><span id="add-error-text"></span></p>
+      <div class="dlg-actions">
+        <button type="button" id="add-organize" class="btn soft big"><i data-icon="restart"></i><span id="add-organize-text"></span></button>
+        <span class="spacer"></span>
+        <button type="button" id="add-cancel" class="btn soft big" data-i18n="cancel"></button>
+        <button type="submit" class="btn primary big" data-i18n="save"></button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="../node_modules/pinyin-pro/dist/index.js"></script>
+  <script src="i18n.js"></script>
+  <script src="icons.js"></script>
+  <script src="sound.js"></script>
+  <script src="romaji.js"></script>
+  <script src="reading.js"></script>
+  <script src="store.js"></script>
+  <script src="stats.js"></script>
+  <script src="analytics.js"></script>
+  <script src="data/zh.js"></script>
+  <script src="data/ja.js"></script>
+  <script src="data/quotes.js"></script>
+  <script src="practice-ime.js"></script>
+  <script src="practice-key.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

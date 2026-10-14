@@ -1,0 +1,32 @@
+{
+  "name": "typing-practice",
+  "version": "1.0.0",
+  "description": "中日文打字练习",
+  "author": "yunhaoli",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node test/check.js",
+    "dist": "electron-builder --win portable"
+  },
+  "build": {
+    "appId": "local.typing.practice",
+    "productName": "一行",
+    "files": [
+      "main.js",
+      "src/**/*"
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "src/icon.ico"
+    }
+  },
+  "dependencies": {
+    "kuromoji": "^0.1.2",
+    "pinyin-pro": "^3.29.5"
+  },
+  "devDependencies": {
+    "electron": "^44.7.0",
+    "electron-builder": "^26.15.3"
+  }
+}
